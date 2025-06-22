@@ -20,7 +20,7 @@ jobs:
         clang -dynamiclib -arch arm64 -o output/libhook1083.dylib connect_hook_bundle/connect_hook_1083.c connect_hook_bundle/fishhook/fishhook.c
 
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: compiled-dylibs
         path: output/
