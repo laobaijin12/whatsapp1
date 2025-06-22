@@ -15,6 +15,7 @@ jobs:
         run: |
           mkdir -p connect_hook_bundle/output
           clang -dynamiclib -arch arm64 \
+            -Iconnect_hook_bundle/fishhook \
             -o connect_hook_bundle/output/libhook_test.dylib \
             connect_hook_bundle/connect_hook_test.c \
             connect_hook_bundle/fishhook/fishhook.c
