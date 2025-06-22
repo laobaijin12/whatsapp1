@@ -1,0 +1,26 @@
+name: Build iOS dylib
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build dylibs
+      run: |
+        mkdir output
+        clang -dynamiclib -arch arm64 -o output/libhook1081.dylib connect_hook_bundle/connect_hook_1081.c connect_hook_bundle/fishhook/fishhook.c
+        clang -dynamiclib -arch arm64 -o output/libhook1082.dylib connect_hook_bundle/connect_hook_1082.c connect_hook_bundle/fishhook/fishhook.c
+        clang -dynamiclib -arch arm64 -o output/libhook1083.dylib connect_hook_bundle/connect_hook_1083.c connect_hook_bundle/fishhook/fishhook.c
+
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: compiled-dylibs
+        path: output/
