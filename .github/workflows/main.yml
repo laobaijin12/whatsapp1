@@ -14,10 +14,12 @@ jobs:
 
     - name: Build dylibs
       run: |
+        cd connect_hook_bundle
         mkdir output
-        clang -dynamiclib -arch arm64 -o output/libhook1081.dylib connect_hook_bundle/connect_hook_1081.c connect_hook_bundle/fishhook/fishhook.c
-        clang -dynamiclib -arch arm64 -o output/libhook1082.dylib connect_hook_bundle/connect_hook_1082.c connect_hook_bundle/fishhook/fishhook.c
-        clang -dynamiclib -arch arm64 -o output/libhook1083.dylib connect_hook_bundle/connect_hook_1083.c connect_hook_bundle/fishhook/fishhook.c
+        clang -dynamiclib -arch arm64 -o output/libhook1081.dylib connect_hook_1081.c fishhook/fishhook.c
+        clang -dynamiclib -arch arm64 -o output/libhook1082.dylib connect_hook_1082.c fishhook/fishhook.c
+        clang -dynamiclib -arch arm64 -o output/libhook1083.dylib connect_hook_1083.c fishhook/fishhook.c
+
 
     - name: Upload
       uses: actions/upload-artifact@v4
