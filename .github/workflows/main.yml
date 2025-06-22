@@ -10,19 +10,31 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Build dylibs
       run: |
-        cd connect_hook_bundle
-        mkdir output
-        clang -dynamiclib -arch arm64 -o output/libhook1081.dylib connect_hook_1081.c fishhook/fishhook.c
-        clang -dynamiclib -arch arm64 -o output/libhook1082.dylib connect_hook_1082.c fishhook/fishhook.c
-        clang -dynamiclib -arch arm64 -o output/libhook1083.dylib connect_hook_1083.c fishhook/fishhook.c
+        mkdir -p connect_hook_bundle/output
+        clang -dynamiclib -arch arm64 \
+          -Iconnect_hook_bundle/fishhook \
+          -o connect_hook_bundle/output/libhook1081.dylib \
+          connect_hook_bundle/connect_hook_1081.c \
+          connect_hook_bundle/fishhook/fishhook.c
 
+        clang -dynamiclib -arch arm64 \
+          -Iconnect_hook_bundle/fishhook \
+          -o connect_hook_bundle/output/libhook1082.dylib \
+          connect_hook_bundle/connect_hook_1082.c \
+          connect_hook_bundle/fishhook/fishhook.c
 
-    - name: Upload
+        clang -dynamiclib -arch arm64 \
+          -Iconnect_hook_bundle/fishhook \
+          -o connect_hook_bundle/output/libhook1083.dylib \
+          connect_hook_bundle/connect_hook_1083.c \
+          connect_hook_bundle/fishhook/fishhook.c
+
+    - name: Upload dylibs
       uses: actions/upload-artifact@v4
       with:
         name: compiled-dylibs
-        path: output/
+        path: connect_hook_bundle/output/
