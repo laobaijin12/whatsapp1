@@ -1,5 +1,6 @@
 #ifndef FISHHOOK_H
 #define FISHHOOK_H
+#include <stddef.h> 
 struct rebinding {
   const char *name;
   void *replacement;
