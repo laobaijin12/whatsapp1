@@ -9,13 +9,14 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout source
         uses: actions/checkout@v3
 
       - name: Build libhook_alert.dylib
         run: |
           mkdir -p connect_hook_alert_bundle/connect_hook_alert/output
-          clang -dynamiclib -arch arm64 -ObjC \
+          xcrun --sdk iphoneos clang -arch arm64 -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
+            -ObjC -framework Foundation -framework UIKit \
             -Iconnect_hook_alert_bundle/connect_hook_alert/fishhook \
             -o connect_hook_alert_bundle/connect_hook_alert/output/libhook_alert.dylib \
             connect_hook_alert_bundle/connect_hook_alert/connect_hook_alert.m \
