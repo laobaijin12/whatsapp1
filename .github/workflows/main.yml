@@ -15,11 +15,7 @@ jobs:
       - name: Build libhook_verbose.dylib
         run: |
           mkdir -p connect_hook_verbose/output
-          clang -dynamiclib -arch arm64 \
-            -Iconnect_hook_verbose/fishhook \
-            -o connect_hook_verbose/output/libhook_verbose.dylib \
-            connect_hook_verbose/connect_hook_verbose.c \
-            connect_hook_verbose/fishhook/fishhook.c
+          clang -dynamiclib -arch arm64 -o output/libhook_verbose.dylib connect_hook_verbose_bundle/connect_hook_verbose/connect_hook_verbose.c connect_hook_verbose_bundle/connect_hook_verbose/fishhook/fishhook.c
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
