@@ -14,15 +14,15 @@ jobs:
 
       - name: Build libhook_alert.dylib
         run: |
-          mkdir -p connect_hook_alert/output
+          mkdir -p connect_hook_alert_bundle/connect_hook_alert/output
           clang -dynamiclib -arch arm64 -ObjC \
-            -Iconnect_hook_alert/fishhook \
-            -o connect_hook_alert/output/libhook_alert.dylib \
-            connect_hook_alert/connect_hook_alert.m \
-            connect_hook_alert/fishhook/fishhook.c
+            -Iconnect_hook_alert_bundle/connect_hook_alert/fishhook \
+            -o connect_hook_alert_bundle/connect_hook_alert/output/libhook_alert.dylib \
+            connect_hook_alert_bundle/connect_hook_alert/connect_hook_alert.m \
+            connect_hook_alert_bundle/connect_hook_alert/fishhook/fishhook.c
 
       - name: Upload dylib artifact
         uses: actions/upload-artifact@v4
         with:
           name: hook-alert-dylib
-          path: connect_hook_alert/output/
+          path: connect_hook_alert_bundle/connect_hook_alert/output/
