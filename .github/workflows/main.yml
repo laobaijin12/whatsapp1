@@ -1,4 +1,4 @@
-name: Build Verbose iOS dylib
+name: Build iOS dylib
 
 on:
   push:
@@ -7,18 +7,21 @@ on:
 jobs:
   build:
     runs-on: macos-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Build libhook_verbose.dylib
-        run: |
-          mkdir -p connect_hook_verbose/output
-          clang -dynamiclib -arch arm64 -o output/libhook_verbose.dylib connect_hook_verbose_bundle/connect_hook_verbose/connect_hook_verbose.c connect_hook_verbose_bundle/connect_hook_verbose/fishhook/fishhook.c
+    - name: Build dylib
+      run: |
+        mkdir -p output
+        clang -dynamiclib -arch arm64 \
+          -Iconnect_hook_verbose_bundle/connect_hook_verbose/fishhook \
+          -o output/libhook_verbose.dylib \
+          connect_hook_verbose_bundle/connect_hook_verbose/connect_hook_verbose.c \
+          connect_hook_verbose_bundle/connect_hook_verbose/fishhook/fishhook.c
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: hook-verbose-dylib
-          path: connect_hook_verbose/output/
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-dylibs
+        path: output/
