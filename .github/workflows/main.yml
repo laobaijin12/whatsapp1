@@ -1,4 +1,4 @@
-name: Build iOS Hook dylib with Alert
+name: Build iOS dylib
 
 on:
   push:
@@ -9,21 +9,24 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Build libhook_alert.dylib
-        run: |
-          mkdir -p connect_hook_alert_bundle/connect_hook_alert/output
-          xcrun --sdk iphoneos clang -arch arm64 -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
-            -ObjC -framework Foundation -framework UIKit \
-            -Iconnect_hook_alert_bundle/connect_hook_alert/fishhook \
-            -o connect_hook_alert_bundle/connect_hook_alert/output/libhook_alert.dylib \
-            connect_hook_alert_bundle/connect_hook_alert/connect_hook_alert.m \
-            connect_hook_alert_bundle/connect_hook_alert/fishhook/fishhook.c
+    - name: Build dylib
+      run: |
+        mkdir -p connect_hook_alert_bundle/connect_hook_alert/output
 
-      - name: Upload dylib artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: hook-alert-dylib
-          path: connect_hook_alert_bundle/connect_hook_alert/output/
+        xcrun --sdk iphoneos clang -arch arm64 \
+          -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
+          -ObjC -framework Foundation -framework UIKit \
+          -Iconnect_hook_alert_bundle/connect_hook_alert/fishhook \
+          -dynamiclib \
+          -o connect_hook_alert_bundle/connect_hook_alert/output/libhook_alert.dylib \
+          connect_hook_alert_bundle/connect_hook_alert/connect_hook_alert.m \
+          connect_hook_alert_bundle/connect_hook_alert/fishhook/fishhook.c
+
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-dylibs
+        path: connect_hook_alert_bundle/connect_hook_alert/output/
